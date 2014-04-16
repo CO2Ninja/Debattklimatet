@@ -1,10 +1,11 @@
 //https://dev.twitter.com/docs/auth/application-only-auth
-
+//http://tweeterid.com/ convert from username to unique id
 package main
 
 import (
   "bitbucket.org/georgebaev/twitterfetcher"
   "fmt"
+  "sync"
 )
 
 func main() {
@@ -20,9 +21,12 @@ func main() {
     return
   }
   urls := []string{
-    "https://twitter.com/BarackObama/status/456506067258597376",
+    "https://twitter.com/813286/status/456506067258597376",
+    "https://twitter.com/BarackObama/status/456529033300168706",
   }
-
+  m := parser(urls)
+  wg := new(sync.WaitGroup)
+  wg.Add(len(urls))
   for i, posturl := range urls {
     go func(posturl string, i int) {
       if err := tp.ValidateURL(posturl); err != nil {
@@ -38,8 +42,20 @@ func main() {
       }
 
       fmt.Println(i, tp)
+      wg.Done()
     }(posturl, i)
   }
-
+  wg.Wait()
   twitterfetcher.InvalidateBearerToken(token, consumerKey, consumerSecret)
+  fmt.Print(m)
 }
+
+func parser(s []string) (m map[string]string) {
+  m = make(map[string]string)
+  for _, url := range s {
+    m["Obama"] = url
+  }
+
+  return 
+}
+
