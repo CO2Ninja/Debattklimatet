@@ -43,14 +43,6 @@ func init() {
 	api = anaconda.NewTwitterApi(ACCESS_TOKEN, ACCESS_TOKEN_SECRET)
 }
 
-// Test_TwitterCredentials tests that non-empty Twitter credentials are set
-// Without this, all following tests will fail
-func Test_TwitterCredentials() {
-	if CONSUMER_KEY == "" || CONSUMER_SECRET == "" || ACCESS_TOKEN == "" || ACCESS_TOKEN_SECRET == "" {
-		fmt.Errorf("Credentials are invalid: at least one is empty")
-	}
-}
-
 func Test_GetTweet() {
 	const tweetId = 456755660504305664
 	tweet, err := api.GetTweet(tweetId, nil)
@@ -62,6 +54,7 @@ func Test_GetTweet() {
 	fmt.Println(tweet.User.Id)
 }
 
+//Fetches tweets based on supplied query string
 func testSearch() {
 	search_result, err := api.GetSearch("miljö", nil)
 	if err != nil {
@@ -73,6 +66,8 @@ func testSearch() {
 	}
 }
 
+//Fetches recent tweets from the Home timeline
+//Count sets the ammount of tweets to retriev
 func getHome(count string) []anaconda.Tweet {
 	v := url.Values{}
 	v.Set("count", count)
@@ -87,29 +82,58 @@ func parserTest() {
 
 }
 
-func main() {
+//Sorts tweets based on userId
+//fix: add []userid
+func sortTweets(id int64, tweets []anaconda.Tweet) {
 	i := 0
+	for _, tweet := range tweets {
+		if tweet.User.Id == id {
+			//moderat[i] = tweet   , add map or array
+			i++
+		}
+	}
+}
+
+
+func main() {
+	i, o := 0, 0
 	moderat := make(map[int]anaconda.Tweet)
-	Test_TwitterCredentials()
+	miljop := make(map[int]anaconda.Tweet)
+
 	fmt.Println("")
 	tweets := getHome("50")
+	
+	//sort tweets
 	for _, tweet := range tweets {
 		if tweet.User.Id == Moderaterna {
 			moderat[i] = tweet
 			i++
 		}
+		if tweet.User.Id == Miljopartiet {
+			miljop[i] = tweet
+			o++
+		}
 		//fmt.Print(tweet.User.Id, ": ", tweet.Text)
 		//fmt.Println("")
 	}
-	//fmt.Println(moderat)
+
+
+	//make embeded tweets(kör som separat gorutiner sen)
 	for _, tweet := range moderat {
 		//fmt.Println("Nya Moderaterna", ": ", tweet.Text)
 		fmt.Println("")
 		time, _ := tweet.CreatedAtTime()
 		embeded, _ := api.GetOEmbedId(tweet.Id, nil)
 		fmt.Println(embeded)
-		fmt.Println(tweet.User.ProfileImageURL, " ", time)
+		fmt.Println(tweet.User.ProfileImageURL, " ", time, tweet.InReplyToScreenName)
 
 	}
-	//testSearch()
+	for _, tweet := range miljop {
+		fmt.Println("")
+		time, _ := tweet.CreatedAtTime()
+		embeded, _ := api.GetOEmbedId(tweet.Id, nil)
+		fmt.Println(embeded)
+		fmt.Println(tweet.User.ProfileImageURL, " ", time, tweet.InReplyToScreenName)
+
+	}
 }
