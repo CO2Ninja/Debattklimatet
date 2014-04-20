@@ -94,7 +94,7 @@ func sortTweets(id int64, tweets []anaconda.Tweet) {
 	}
 }
 
-
+//Split in several functions and perhaps files/"classes"
 func main() {
 	i, o := 0, 0
 	moderat := make(map[int]anaconda.Tweet)
@@ -102,7 +102,7 @@ func main() {
 
 	fmt.Println("")
 	tweets := getHome("50")
-	
+
 	//sort tweets
 	for _, tweet := range tweets {
 		if tweet.User.Id == Moderaterna {
@@ -133,7 +133,7 @@ func main() {
 		time, _ := tweet.CreatedAtTime()
 		embeded, _ := api.GetOEmbedId(tweet.Id, nil)
 		fmt.Println(embeded)
-		fmt.Println(tweet.User.ProfileImageURL, " ", time, tweet.InReplyToScreenName)
+		fmt.Println(tweet.User.ProfileImageURL, " ", time, tweet.InReplyToScreenName, tweet.Entities.Media)
 
 	}
 }
