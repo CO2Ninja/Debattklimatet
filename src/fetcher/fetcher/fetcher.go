@@ -27,21 +27,12 @@ const (
 	Sverigedemokraterna = 97878686
 )
 
-//maps
-var moderaterna = make(map[int]anaconda.Tweet)
-var miljopartiet = make(map[int]anaconda.Tweet)
-var vansterpartiet = make(map[int]anaconda.Tweet)
-var socialdemokraterna = make(map[int]anaconda.Tweet)
-var folkpartiet = make(map[int]anaconda.Tweet)
-var kristdemokraterna = make(map[int]anaconda.Tweet)
-var centerpartiet = make(map[int]anaconda.Tweet)
-var sverigedmokraterna = make(map[int]anaconda.Tweet)
-
 //config variables
 var CONSUMER_KEY = "xswE9V0Xjlsvzf14P7Mk7LOg5"
 var CONSUMER_SECRET = "nHX2KIFZA4dFmUEOAIxA1msyOpydEtCyp13VREFcKjpVX8saHs"
 var ACCESS_TOKEN = "2447607758-tsYHayIaChAAZ7JMlBcZ5SN86J0qXq9WqpO8xXP"
 var ACCESS_TOKEN_SECRET = "KPCjLAQDhochBZm8Ggyw0c9U2V1Rv4LO7kiYDIvxmMWSj"
+var dbURL = "user=co2ninjas dbname=co2ninjas password=co2ninjas12345 host=django-db.cyyapufsikx9.eu-west-1.rds.amazonaws.com port=5432"
 
 var api *anaconda.TwitterApi
 
@@ -66,47 +57,6 @@ func getHome(count string) []anaconda.Tweet {
 	return tweets
 }
 
-// Sorts the tweet's
-func sorter() {
-	tweets := getHome("50")
-	a, b, c, d, e, f, g, h := 0,0,0,0,0,0,0,0
-
-	//sort tweets
-	for _, tweet := range tweets {
-		if tweet.User.Id == Moderaterna {
-			moderaterna[a] = tweet
-			a++
-		}
-		if tweet.User.Id == Miljopartiet {
-			miljopartiet[b] = tweet
-			b++
-		}
-		if tweet.User.Id == Vansterpartiet {
-			vansterpartiet[c] = tweet
-			c++
-		}
-		if tweet.User.Id == Socialdemokraterna {
-			socialdemokraterna[d] = tweet
-			d++
-		}
-		if tweet.User.Id == Folkpartiet {
-			folkpartiet[e] = tweet
-			e++
-		}
-		if tweet.User.Id == Kristdemokraterna {
-			kristdemokraterna[f] = tweet
-			f++
-		}
-		if tweet.User.Id == Centerpartiet {
-			centerpartiet[g] = tweet
-			g++
-		}
-		if tweet.User.Id == Sverigedemokraterna {
-			sverigedmokraterna[h] = tweet
-			h++
-		}
-	}
-}
 
 /*
 func dataStructurer(dataMap map[int]anaconda.Tweet) {
@@ -147,37 +97,38 @@ func dataStructurer(dataMap map[int]anaconda.Tweet) {
 */
 
 func main() {
-	sorter()
-	for i , tweets := range moderaterna {
-		fmt.Println("index: ", i, tweets.Text)
-	}
-	
-	db, err := sql.Open("postgres", "user=co2ninjas dbname=co2ninjas password=co2ninjas12345 host=django-db.cyyapufsikx9.eu-west-1.rds.amazonaws.com port=5432")
-	if err != nil {
-		log.Fatal(err)
-		fmt.Println(err)
-	}
+	insertTweets(getHome("50"))
 
+}
+// Connects to a specified DB with specified paramters
+ func dbConnect(database string, parameters string) *sql.DB {
+ 		db, err := sql.Open(database, parameters)
+		if err != nil {
+			log.Fatal(err)
+		}
+		return db
 
+ }
 
-	/*
-	#Creating table debattklimatet_user
-	#Creating table debattklimatet_hashtag
-	#Creating table debattklimatet_media
-	#Creating table debattklimatet_tweet_HashTags
-	#Creating table debattklimatet_tweet_Media
-	#Creating table debattklimatet_tweet
-	*/
-	fmt.Println("DB:")
-	//id := 1234
+// Inserts the tweets into the right tables in the database
+// table debattklimatet_user
+// table debattklimatet_hashtag
+// table debattklimatet_media
+// table debattklimatet_tweet_HashTags
+// table debattklimatet_tweet_Media
+// table debattklimatet_tweet
+func insertTweets(tweets []anaconda.Tweet) {
+	db := dbConnect("postgres", dbURL)
+
 	rows, err := db.Query("SELECT * FROM debattklimatet_user")
-
-	strings, _ := rows.Columns()
+	if err != nil {
+            log.Fatal(err)
+    }
+    strings, _ := rows.Columns()
 
 	for _, s := range strings {
 		fmt.Println(s)
 	}
-
 	for rows.Next() {
 	    var id int
 	    var name string
@@ -185,18 +136,17 @@ func main() {
 	    fmt.Println(id, name)
 	    fmt.Println(name)
 	}
+
+
+	/*
 	var userid int
 	error := db.QueryRow(`INSERT INTO debattklimatet_user(id, name, ScreenName, ProfileImageUrl)
 	VALUES(123456, 'testsson', 'testtest', 'http://test.test' ) RETURNING id`).Scan(&userid)
 
 	fmt.Println(error)
+	*/
 
-	db.Close()
-
-
-	//dataStructurer(moderaterna)
-
+    db.Close()
 
 }
-
 
