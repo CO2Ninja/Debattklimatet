@@ -152,11 +152,13 @@ func main() {
 		fmt.Println("index: ", i, tweets.Text)
 	}
 	
-	db, err := sql.Open("postgres", "user=co2ninjas dbname=co2ninjas password=co2ninjas12345 host=django-db.cyyapufsikx9.eu-west-1.rds.amazonaws.com port=5432 sslmode=verify-full")
+	db, err := sql.Open("postgres", "user=co2ninjas dbname=co2ninjas password=co2ninjas12345 host=django-db.cyyapufsikx9.eu-west-1.rds.amazonaws.com port=5432")
 	if err != nil {
 		log.Fatal(err)
 		fmt.Println(err)
 	}
+
+
 
 	/*
 	#Creating table debattklimatet_user
@@ -170,8 +172,27 @@ func main() {
 	//id := 1234
 	rows, err := db.Query("SELECT * FROM debattklimatet_user")
 
+	strings, _ := rows.Columns()
 
-	fmt.Println(rows)
+	for _, s := range strings {
+		fmt.Println(s)
+	}
+
+	for rows.Next() {
+	    var id int
+	    var name string
+	    err = rows.Scan(&id, &name)
+	    fmt.Println(id, name)
+	    fmt.Println(name)
+	}
+	var userid int
+	error := db.QueryRow(`INSERT INTO debattklimatet_user(id, name, ScreenName, ProfileImageUrl)
+	VALUES(123456, 'testsson', 'testtest', 'http://test.test' ) RETURNING id`).Scan(&userid)
+
+	fmt.Println(error)
+
+	db.Close()
+
 
 	//dataStructurer(moderaterna)
 
