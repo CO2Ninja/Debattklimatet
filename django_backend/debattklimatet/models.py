@@ -42,7 +42,7 @@ class Tweet(models.Model):
     RetweetedStatus     = models.ForeignKeyField(Tweet)
     Source              = models.CharField(max_length = 200)
     Text                = models.CharField(max_length = 150)
-    User                = models.ForeignKeyField(User)
+    User                = models.ForeignKey(User)
     HashTags            = models.ManyToManyField(HashTag)
     Media               = models.ManyToManyField(Media)
     
