@@ -28,21 +28,21 @@ from django.db import models
     #User                 User        `json:"user"`
 #}
 class Tweet(models.Model):
-    CreatedAt           = models.DateTimeField(db_index = True)
-    FavoriteCount       = models.Integer()
-    Favorited           = models.Boolean()
-    Id                  = models.BigInteger(primary_key = True)
-    IdStr               = models.String(max_length = 200)
-    #InReplyToScreenName = models.String(max_length = 200)
-    #InReplyToStatusID   = models.BigInteger()
-    #InReplyToStatusIdStr= models.String(max_length = 200)
-    #InReplyToUserID     = models.BigInteger()
-    RetweetCount        = models.Integer()
-    Retweeted           = models.Boolean()
-    RetweetedStatus     = models.ForeignKey(Tweet)
-    Source              = models.String(max_length = 200)
-    Text                = models.String(max_length = 150)
-    User                = models.ForeignKey(User)
+    CreatedAt           = models.DateTimeFieldField(db_index = True)
+    FavoriteCount       = models.IntegerField()
+    Favorited           = models.BooleanField()
+    Id                  = models.BigIntegerField(primary_key = True)
+    IdStr               = models.StringField(max_length = 200)
+    #InReplyToScreenName = models.StringField(max_length = 200)
+    #InReplyToStatusID   = models.BigIntegerField()
+    #InReplyToStatusIdStr= models.StringField(max_length = 200)
+    #InReplyToUserID     = models.BigInteger(Field)
+    RetweetCount        = models.IntegerField()
+    Retweeted           = models.BooleanField()
+    RetweetedStatus     = models.ForeignKeyField(Tweet)
+    Source              = models.StringField(max_length = 200)
+    Text                = models.StringField(max_length = 150)
+    User                = models.ForeignKeyField(User)
     HashTags            = models.ManyToManyField(HashTag)
     Media               = models.ManyToManyField(Media)
     
@@ -88,13 +88,13 @@ class Tweet(models.Model):
     #Verified                       bool   `json:"verified"`
 #}
 class User(models.Model):
-    Id                  = models.BigInteger(primary_key = True)
-    Name                = models.String(max_length = 200)
-    ScreenName          = models.String(max_length = 200)
-    ProfileImageUrl     = models.String(max_length = 200)
+    Id                  = models.BigIntegerField(primary_key = True)
+    Name                = models.StringField(max_length = 200)
+    ScreenName          = models.StringField(max_length = 200)
+    ProfileImageUrl     = models.StringField(max_length = 200)
     
 class HashTag(models.Model):
-    tag                 = models.String(max_length = 100, primary_key = True)
+    tag                 = models.StringField(max_length = 100, primary_key = True)
 
 
 #Media []struct {
@@ -110,9 +110,9 @@ class HashTag(models.Model):
         #Indices         []int
     #}
 class Media(models.Model):
-    Id                  = models.BigInteger(primary_key = True)
-    Media_url           = models.String(max_length = 200)
-    Media_url_https     = models.String(max_length = 200)
-    Url                 = models.String(max_length = 200)
+    Id                  = models.BigIntegerField(primary_key = True)
+    Media_url           = models.StringField(max_length = 200)
+    Media_url_https     = models.StringField(max_length = 200)
+    Url                 = models.StringField(max_length = 200)
     
     
