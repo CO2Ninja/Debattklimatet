@@ -104,6 +104,29 @@ func dbConnect(database string, parameters string) *sql.DB {
 
 }
 
+//checks if the User.Id exists 
+func userExists(db *sql.DB, id int64) bool {
+	rows, err := db.Query("SELECT COUNT(1) FROM debattklimatet_twitteruser WHERE id=$1",id)
+    if err != nil {
+            log.Fatal(err)
+    }
+    return rows.Next()
+    
+
+    /*
+    var idString string
+    err := db.QueryRow("SELECT id FROM debattklimatet_twitteruser WHERE id=$1", id).Scan(&idString)
+    switch {
+    case err == sql.ErrNoRows:
+            log.Printf("No user with that ID.")
+    case err != nil:
+            log.Fatal(err)
+    default:
+            fmt.Printf("Username is %s\n", username)
+    }
+    */
+}
+
 // Inserts the tweets into the right tables in the database
 // table debattklimatet_user
 // table debattklimatet_hashtag
@@ -113,6 +136,24 @@ func dbConnect(database string, parameters string) *sql.DB {
 // table debattklimatet_tweet
 func insertTweets(tweet []anaconda.Tweet) {
 	db := dbConnect("postgres", dbURL)
+
+	for _, tweets := range tweet {
+		if !userExists(db, tweets.User.Id) {
+			_, err := db.Exec(
+		    "INSERT INTO debattklimatet_twitteruser (id, name, screenname, profileimageurl, rating) VALUES ($1, $2, $3, $4, $5)",
+		    tweets.User.Id,
+		    tweets.User.Name, 
+		    tweets.User.ScreenName, 
+		    tweets.User.ProfileImageURL,
+		    0,
+			)
+			if err != nil {	
+		        panic(err)
+		    }
+		}
+	}
+
+	/*
 	for _, tweets := range tweet {
 		//debattklimatet_twitteruser  Parameters: Id int64, Name string, ScreenName string, ProfileImageUrl string
 		_, error := db.Exec(
