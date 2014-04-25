@@ -19,6 +19,7 @@ class TwitterUser(models.Model):
     screenname          = models.CharField(max_length = 200)
     profileimageurl     = models.CharField(max_length = 200)
     rating              = models.IntegerField()
+    totalscore          = models.IntegerField()
     
 class HashTag(models.Model):
     tag                 = models.CharField(max_length = 100, primary_key = True)
@@ -45,6 +46,8 @@ class Tweet(models.Model):
     source              = models.CharField(max_length = 200)
     text                = models.CharField(max_length = 150)
     user                = models.ForeignKey(TwitterUser)
+    parsed              = models.BooleanField()
+    relevant            = models.BooleanField()
    
     #hashtags            = models.ManyToManyField(HashTag)
     #media               = models.ManyToManyField(Media)
