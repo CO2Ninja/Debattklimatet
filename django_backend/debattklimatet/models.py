@@ -8,11 +8,16 @@ from django.db import models
 #Creating table debattklimatet_tweet
 
 
+#Totalpoäng
+#Utträkning av procent?
+#Hurvida tweets innehåller miljökommentarer eller ej
+#Om tweets har gåtts igenom av parsern.
+
 class TwitterUser(models.Model):
     id                  = models.BigIntegerField(primary_key = True)
     name                = models.CharField(max_length = 200)
-    screenName          = models.CharField(max_length = 200)
-    profileImageUrl     = models.CharField(max_length = 200)
+    screenname          = models.CharField(max_length = 200)
+    profileimageurl     = models.CharField(max_length = 200)
     rating              = models.IntegerField()
     
 class HashTag(models.Model):
@@ -40,8 +45,9 @@ class Tweet(models.Model):
     source              = models.CharField(max_length = 200)
     text                = models.CharField(max_length = 150)
     user                = models.ForeignKey(TwitterUser)
-    hashtags            = models.ManyToManyField(HashTag)
-    media               = models.ManyToManyField(Media)
+   
+    #hashtags            = models.ManyToManyField(HashTag)
+    #media               = models.ManyToManyField(Media)
     
     
     
