@@ -125,12 +125,13 @@ func insertTweets(tweet []anaconda.Tweet) {
 		//if !userExists(db, tweets.User.Id) {
 		if true {
 			_, err := db.Exec(
-		    "INSERT INTO debattklimatet_twitteruser (id, name, screenname, profileimageurl, rating) VALUES ($1, $2, $3, $4, $5)",
+		    "INSERT INTO debattklimatet_twitteruser (id, name, screenname, profileimageurl, rating, totalscore) VALUES ($1, $2, $3, $4, $5, $6)",
 		    tweets.User.Id,
 		    tweets.User.Name, 
 		    tweets.User.ScreenName, 
 		    tweets.User.ProfileImageURL,
 		    0,
+                    0,
 			)
 			if err != nil {	
 		        fmt.Println(err)
@@ -139,7 +140,7 @@ func insertTweets(tweet []anaconda.Tweet) {
 		//add tweet
 		//createdat | favoritecount | favorited | id | idstr | retweetcount | retweeted | source | text | user_id
 		_, err := db.Exec(
-		"INSERT INTO debattklimatet_tweet (createdat, favoritecount, favorited, id, idstr, RetweetCount, Retweeted, Text, Source, user_id ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, (SELECT id FROM debattklimatet_twitteruser WHERE id=$10))",
+		"INSERT INTO debattklimatet_tweet (createdat, favoritecount, favorited, id, idstr, RetweetCount, Retweeted, Text, Source, user_id, parsed, relevant ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, (SELECT id FROM debattklimatet_twitteruser WHERE id=$10), $11, $12)",
 		tweets.CreatedAt, 
 		tweets.FavoriteCount, 
 		tweets.Favorited,
@@ -150,6 +151,8 @@ func insertTweets(tweet []anaconda.Tweet) {
 		tweets.Text,
 		tweets.Source,
 		tweets.User.Id,
+                false,
+                false,
 		)
 		if err != nil {	
 			fmt.Println(err)
@@ -162,5 +165,5 @@ func insertTweets(tweet []anaconda.Tweet) {
 
 //GO!
 func main() {
-	insertTweets(getHome("20"))
+	insertTweets(getHome("300"))
 }

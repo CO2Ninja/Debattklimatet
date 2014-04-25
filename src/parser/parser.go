@@ -39,7 +39,9 @@ func main() {
             var source string
             var text string
             var user_id int64
-            if err := rows.Scan(&createdat, &favoritecount, &favorited, &id, &idstr, &retweetcount, &retweeted, &source, &text, &user_id); err != nil {
+            var parsed bool
+            var relevant bool
+            if err := rows.Scan(&createdat, &favoritecount, &favorited, &id, &idstr, &retweetcount, &retweeted, &source, &text, &user_id, &parsed, &relevant); err != nil {
                     log.Fatal(err)
             }
             fmt.Printf("user_id %d tweeted %s\n", user_id, text)
@@ -69,7 +71,7 @@ func main() {
 		}
 		
 		if getPoint {
-			recount(user_id)
+			recount(user_id, db)
 		}
 		
 	}
@@ -95,11 +97,16 @@ func main() {
 		return r.Match([]byte("tweet"))										//om något av uttrycken finns, returnera true, annars false
 	}
 	
-	func recountPoints(userId int) {
-		// Get partyPoints & totalPoints from DB
+	func recountPoints(userId int64, db *sql.DB) {
+            //Here we update add one point to the users totalscore column.
+            _, err := db.Exec("UPDATE debattklimatet_twitterusers SET totalscore = totalscore + 1 WHERE id=$1", userId)
+            if err != nil {     
+                        fmt.Println(err)
+                    }
+                    
 		//points int := ...
 		//totalPoints int := ...
-		points++
-		totalPoints++
+		//points++
+		//totalPoints++
 		// Send points and totalPoints back to DB
 	}
