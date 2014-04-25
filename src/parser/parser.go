@@ -5,6 +5,9 @@ import (
         "fmt"
         _ "github.com/lib/pq"
         "log"
+		"strings"
+		"os"
+		"regexp"
 )
 
 var dbURL = "user=co2ninjas dbname=co2ninjas password=co2ninjas12345 host=django-db.cyyapufsikx9.eu-west-1.rds.amazonaws.com port=5432"
@@ -45,4 +48,58 @@ func main() {
     if err := rows.Err(); err != nil {
             log.Fatal(err)
     }
+	
+		getPoint bool := false
+		unwantedWords := make([]string, 2)
+		unwantedWords[0] = "miljöpartiet"
+		unwanteedWords[1] = "^#\D*"
+		wantedWords := make([]string, 2)
+		wantedWords[0} = "hållbar utveckling"
+		wantedWords[1] = "miljö(\D*)"
+
+		for i int = 0, i < len(unwantedWords), i++ {
+			text := removeUnwanted(unwantedWords[i], text)
+		}
+		
+		for i int = 0, i < len(wantedWords), i++ {
+			if hasExpression(wantedWord[i], text){
+				getPoint = true
+				//status = true
+			}
+		}
+		
+		if getPoint {
+			recount(user_id)
+		}
+		
+	}
 }
+
+	//Removes the specified unwanted expression from the tweet (if the tweet contains the expression)
+	func removeUnwanted(string expression, string tweet) string{
+	
+	reg, error := regexp.Compile ("expression")
+    if error != nil {
+        fmt.Printf ("Compile failed: %s", error.String ())
+        os.Exit (1)
+    }
+	output := ""
+		output = string (reg.ReplaceAll (strings.Bytes (tweet),
+    			      strings.Bytes ("")))
+					  
+	}				  
+	
+	// Checks if the tweet contains the specified expression 
+	func hasExpression (string expression, string tweet) bool{
+		r, _ := regexp.Compile("expression")
+		return r.Match([]byte("tweet"))										//om något av uttrycken finns, returnera true, annars false
+	}
+	
+	func recountPoints(userId int) {
+		// Get partyPoints & totalPoints from DB
+		//points int := ...
+		//totalPoints int := ...
+		points++
+		totalPoints++
+		// Send points and totalPoints back to DB
+	}
