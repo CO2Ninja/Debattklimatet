@@ -1,20 +1,21 @@
-// https://godoc.org/github.com/ChimeraCoder/anaconda
 // Fetches tweets from Debattklimatet's Home Timeline
-// And sorts them based on User Id
+// and inserts the tweets into a database
 // @CO2Ninja
 // Version 0.1
 package main
 
 import (
+	"database/sql"
 	"fmt"
 	"github.com/ChimeraCoder/anaconda"
+	_ "github.com/lib/pq"
+	"log"
 	"net/url"
 	"runtime"
 )
 
 //Twitter Id's
 const (
-	Carl_Bildt          = 18549724
 	Moderaterna         = 19226961
 	Vansterpartiet      = 17233550
 	Centerpartiet       = 3796501
@@ -30,9 +31,9 @@ var CONSUMER_KEY = "xswE9V0Xjlsvzf14P7Mk7LOg5"
 var CONSUMER_SECRET = "nHX2KIFZA4dFmUEOAIxA1msyOpydEtCyp13VREFcKjpVX8saHs"
 var ACCESS_TOKEN = "2447607758-tsYHayIaChAAZ7JMlBcZ5SN86J0qXq9WqpO8xXP"
 var ACCESS_TOKEN_SECRET = "KPCjLAQDhochBZm8Ggyw0c9U2V1Rv4LO7kiYDIvxmMWSj"
+var dbURL = "user=co2ninjas dbname=co2ninjas password=co2ninjas12345 host=django-db.cyyapufsikx9.eu-west-1.rds.amazonaws.com port=5432"
 
 var api *anaconda.TwitterApi
-
 
 func init() {
 	numcpu := runtime.NumCPU()
@@ -41,29 +42,6 @@ func init() {
 	anaconda.SetConsumerKey(CONSUMER_KEY)
 	anaconda.SetConsumerSecret(CONSUMER_SECRET)
 	api = anaconda.NewTwitterApi(ACCESS_TOKEN, ACCESS_TOKEN_SECRET)
-}
-
-func Test_GetTweet() {
-	const tweetId = 456755660504305664
-	tweet, err := api.GetTweet(tweetId, nil)
-	if err != nil {
-		fmt.Errorf("GetTweet returned error: %s", err.Error())
-	}
-	fmt.Println(tweet.Text)
-	fmt.Println(tweet.Id)
-	fmt.Println(tweet.User.Id)
-}
-
-//Fetches tweets based on supplied query string
-func testSearch() {
-	search_result, err := api.GetSearch("miljö", nil)
-	if err != nil {
-		panic(err)
-	}
-
-	for _, tweet := range search_result {
-		fmt.Print(tweet.Text)
-	}
 }
 
 //Fetches recent tweets from the Home timeline
@@ -78,62 +56,111 @@ func getHome(count string) []anaconda.Tweet {
 	return tweets
 }
 
-func parserTest() {
+/*
+func dataStructurer(dataMap map[int]anaconda.Tweet) {
 
-}
+	for _ , tweet := range dataMap {
+		//alla fält
 
-//Sorts tweets based on userId
-//fix: add []userid
-func sortTweets(id int64, tweets []anaconda.Tweet) {
-	i := 0
-	for _, tweet := range tweets {
-		if tweet.User.Id == id {
-			//moderat[i] = tweet   , add map or array
-			i++
-		}
+		fmt.Println(tweet.Id)
+		CreatedAt
+		FavoriteCount //int64
+		Favorited	//bool
+		Retweeted	//bool
+		RetweetCount	//int64
+		Text	//string
+		RetweetedStatus
+		Source
+		// Structs
+		User
+			    Id
+    			Name
+    			ScreenName
+    			ProfileImageUrl
+
+
+		Entities
+			//array
+			Hashtag
+				 tag
+			//array
+			Media
+				Id
+    			Media_url
+    			Media_url_https
+    			Url
 	}
+
+}
+*/
+
+// Connects to a specified DB with specified paramters
+func dbConnect(database string, parameters string) *sql.DB {
+	db, err := sql.Open(database, parameters)
+	if err != nil {
+		log.Fatal(err)
+	}
+	return db
+
 }
 
-//Split in several functions and perhaps files/"classes"
+//checks if the User.Id exists 
+func userExists(db *sql.DB, id int64) bool {
+	fmt.Println("test")
+	rows, err := db.Query("SELECT COUNT(1) FROM debattklimatet_twitteruser WHERE id=$1",id)
+    if err != nil {
+            log.Fatal(err)
+    }
+    fmt.Println(id)
+    return rows.Next()
+    
+}
+
+// Inserts the tweets into the right tables in the database
+func insertTweets(tweet []anaconda.Tweet) {
+	db := dbConnect("postgres", dbURL)
+
+	for _, tweets := range tweet {
+		//add user
+		//if !userExists(db, tweets.User.Id) {
+		if true {
+			_, err := db.Exec(
+		    "INSERT INTO debattklimatet_twitteruser (id, name, screenname, profileimageurl, rating) VALUES ($1, $2, $3, $4, $5)",
+		    tweets.User.Id,
+		    tweets.User.Name, 
+		    tweets.User.ScreenName, 
+		    tweets.User.ProfileImageURL,
+		    0,
+			)
+			if err != nil {	
+		        fmt.Println(err)
+		    }
+		}
+		//add tweet
+		//createdat | favoritecount | favorited | id | idstr | retweetcount | retweeted | source | text | user_id
+		_, err := db.Exec(
+		"INSERT INTO debattklimatet_tweet (createdat, favoritecount, favorited, id, idstr, RetweetCount, Retweeted, Text, Source, user_id ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, (SELECT id FROM debattklimatet_twitteruser WHERE id=$10))",
+		tweets.CreatedAt, 
+		tweets.FavoriteCount, 
+		tweets.Favorited,
+		tweets.Id,
+		tweets.IdStr,
+		tweets.RetweetCount,
+		tweets.Retweeted,
+		tweets.Text,
+		tweets.Source,
+		tweets.User.Id,
+		)
+		if err != nil {	
+			fmt.Println(err)
+		}
+
+	}
+	
+	db.Close()
+}
+
+//GO!
 func main() {
-	i, o := 0, 0
-	moderat := make(map[int]anaconda.Tweet)
-	miljop := make(map[int]anaconda.Tweet)
-
-	fmt.Println("")
-	tweets := getHome("50")
-
-	//sort tweets
-	for _, tweet := range tweets {
-		if tweet.User.Id == Moderaterna {
-			moderat[i] = tweet
-			i++
-		}
-		if tweet.User.Id == Miljopartiet {
-			miljop[i] = tweet
-			o++
-		}
-		//fmt.Print(tweet.User.Id, ": ", tweet.Text)
-		//fmt.Println("")
-	}
-
-
-	//make embeded tweets(kör som separat gorutiner sen)
-	for _, tweet := range moderat {
-		//fmt.Println("Nya Moderaterna", ": ", tweet.Text)
-		fmt.Println("")
-		time, _ := tweet.CreatedAtTime()
-		embeded, _ := api.GetOEmbedId(tweet.Id, nil)
-		fmt.Println(embeded)
-		fmt.Println(tweet.User.ProfileImageURL, " ", time, tweet.InReplyToScreenName)
-
-	}
-	for _, tweet := range miljop {
-		fmt.Println("")
-		time, _ := tweet.CreatedAtTime()
-		embeded, _ := api.GetOEmbedId(tweet.Id, nil)
-		fmt.Println(embeded)
-		fmt.Println(tweet.User.ProfileImageURL, " ", time, tweet.InReplyToScreenName, tweet.Entities.Media)
-
-	}
+	insertTweets(getHome("20"))
 }

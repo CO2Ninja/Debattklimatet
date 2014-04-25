@@ -106,39 +106,24 @@ func dbConnect(database string, parameters string) *sql.DB {
 
 //checks if the User.Id exists 
 func userExists(db *sql.DB, id int64) bool {
+	fmt.Println("test")
 	rows, err := db.Query("SELECT COUNT(1) FROM debattklimatet_twitteruser WHERE id=$1",id)
     if err != nil {
             log.Fatal(err)
     }
+    fmt.Println(id)
     return rows.Next()
     
-
-    /*
-    var idString string
-    err := db.QueryRow("SELECT id FROM debattklimatet_twitteruser WHERE id=$1", id).Scan(&idString)
-    switch {
-    case err == sql.ErrNoRows:
-            log.Printf("No user with that ID.")
-    case err != nil:
-            log.Fatal(err)
-    default:
-            fmt.Printf("Username is %s\n", username)
-    }
-    */
 }
 
 // Inserts the tweets into the right tables in the database
-// table debattklimatet_user
-// table debattklimatet_hashtag
-// table debattklimatet_media
-// table debattklimatet_tweet_HashTags
-// table debattklimatet_tweet_Media
-// table debattklimatet_tweet
 func insertTweets(tweet []anaconda.Tweet) {
 	db := dbConnect("postgres", dbURL)
 
 	for _, tweets := range tweet {
-		if !userExists(db, tweets.User.Id) {
+		//add user
+		//if !userExists(db, tweets.User.Id) {
+		if true {
 			_, err := db.Exec(
 		    "INSERT INTO debattklimatet_twitteruser (id, name, screenname, profileimageurl, rating) VALUES ($1, $2, $3, $4, $5)",
 		    tweets.User.Id,
@@ -148,50 +133,34 @@ func insertTweets(tweet []anaconda.Tweet) {
 		    0,
 			)
 			if err != nil {	
-		        panic(err)
+		        fmt.Println(err)
 		    }
 		}
+		//add tweet
+		//createdat | favoritecount | favorited | id | idstr | retweetcount | retweeted | source | text | user_id
+		_, err := db.Exec(
+		"INSERT INTO debattklimatet_tweet (createdat, favoritecount, favorited, id, idstr, RetweetCount, Retweeted, Text, Source, user_id ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, (SELECT id FROM debattklimatet_twitteruser WHERE id=$10))",
+		tweets.CreatedAt, 
+		tweets.FavoriteCount, 
+		tweets.Favorited,
+		tweets.Id,
+		tweets.IdStr,
+		tweets.RetweetCount,
+		tweets.Retweeted,
+		tweets.Text,
+		tweets.Source,
+		tweets.User.Id,
+		)
+		if err != nil {	
+			fmt.Println(err)
+		}
+
 	}
-
-	/*
-	for _, tweets := range tweet {
-		//debattklimatet_twitteruser  Parameters: Id int64, Name string, ScreenName string, ProfileImageUrl string
-		_, error := db.Exec(
-			"INSERT INTO debattklimatet_twitteruser(id, name, ScreenName, ProfileImageUrl, rating) VALUES(?, ?, ?, ?, ?)", 123, "tweets.User.Name", "tweets.User.ScreenName", "tweets.User.ProfileImageURL", 0)
-		if error != nil {	
-        	panic(error)
-        	fmt.Println(tweets.Id)
-    	}
-
-	}
-
-	/*
-	result, err := db.Exec(
-        "INSERT INTO users (name, age) VALUES (?, ?)",
-        "gopher",
-        27,
-	)
-	*/
-
-
-	/*
-	//debattklimatet_hashtag Parameters: Indices []int, Text   string
-	_, error = db.Exec(`INSERT INTO debattklimatet_hashtag(id, name, ScreenName, ProfileImageUrl)
-	VALUES(tweet.User.Id, tweet.User.Name, tweet.User.ScreenName, tweet.User.ProfileImageUrl,  ) RETURNING id`)
-
-	//debattklimatet_media  Parameters: Id int64, Media_url string, Media_url_https string, Url string
-	_, error = db.Exec(`INSERT INTO debattklimatet_user(id, name, ScreenName, ProfileImageUrl)
-	VALUES(tweet.User.Id, tweet.User.Name, tweet.User.ScreenName, tweet.User.ProfileImageUrl ) RETURNING id`)
-
-	//debattklimatet_tweet  Parameters: Id int64, CreatedAt string, FavoriteCount int64, Favorited bool, Retweeted bool, RetweetCount int64, Text string, Source string
-	_, error = db.Exec(`INSERT INTO debattklimatet_user(id, name, ScreenName, ProfileImageUrl)
-	VALUES(tweet.User.Id, tweet.User.Name, tweet.User.ScreenName, tweet.User.ProfileImageUrl ) RETURNING id`)
-	*/
-
+	
 	db.Close()
 }
 
 //GO!
 func main() {
-	insertTweets(getHome("50"))
+	insertTweets(getHome("20"))
 }
