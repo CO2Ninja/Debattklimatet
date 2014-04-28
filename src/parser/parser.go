@@ -54,10 +54,13 @@ func main() {
 		getPoint bool := false
 		unwantedWords := make([]string, 2)
 		unwantedWords[0] = "miljöpartiet"
-		unwanteedWords[1] = "^#\D*"
+		// Removes hashtags
+		unwanteedWords[1] = "(#\S*)"
 		wantedWords := make([]string, 2)
 		wantedWords[0} = "hållbar utveckling"
-		wantedWords[1] = "miljö(\D*)"
+		wantedWords[1] = "miljö([a-z]*)"
+		
+		text = toLower(text)
 
 		for i int = 0, i < len(unwantedWords), i++ {
 			text := removeUnwanted(unwantedWords[i], text)
