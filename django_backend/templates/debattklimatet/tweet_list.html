@@ -1,7 +1,9 @@
 <h2>Tweets</h2>
 <ul>
     {% for tweet in object_list %}
-        <li>{{ tweet.createdat }}"> </li>
+        {% if tweet.relevant %}
+            <li> {{tweet.text}} </li>
+        {% endif %}
     {% endfor %}
 </ul>
 

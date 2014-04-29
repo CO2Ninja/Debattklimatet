@@ -1,11 +1,16 @@
-<h2>Partierna</h2>
+
 
 {% for party in object_list %}
 <img src="{{ party.profileimageurl }}" id={{party.id}} style="display:none">
 {% endfor %}
 
-<canvas id="canvas" width="500" height="375" style="border:1px solid #d3d3d3"></canvas>
+<div id="container">
+<h2>Partierna</h2>
+<canvas id="canvas" width="700" height="375" style="border:1px solid #d3d3d3; float:left"></canvas>
 
+<div id="tweetlist" style="float:left; height:375px;width:400px">
+</div>
+</div>
 
 <script>
 window.onload = function() {
@@ -13,5 +18,6 @@ window.onload = function() {
     {% for party in object_list %}
         context.drawImage(document.getElementById("{{party.id}}"), {{forloop.counter0}}*50, 325-{{party.totalscore}}*50);
     {% endfor %}
+    document.getElementById("tweetlist").innerHTML='<object type="text/html" data="/tweets/" style="height:100%;width:100%" ></object>';
 }
 </script>

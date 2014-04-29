@@ -40,7 +40,6 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'debattklimatet',
-    'django_extensions',
 )
 
 MIDDLEWARE_CLASSES = (
