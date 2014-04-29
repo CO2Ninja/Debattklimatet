@@ -67,8 +67,10 @@ func main() {
 		}
 		if getPoint {
 			recountPoints(user_id, db)
+            isRelevant(id, db)
 		}
 	}
+    db.Close()
 
 }
 
@@ -103,4 +105,11 @@ func recountPoints(userId int64, db *sql.DB) {
 	//points++
 	//totalPoints++
 	// Send points and totalPoints back to DB
+}
+
+func isRelevant(id int64, db *sql.DB) {
+    _, err := db.Exec("UPDATE debattklimatet_tweet SET relevant=TRUE WHERE id=$1", id)
+    if err != nil {
+        fmt.Println(err)
+    }
 }
