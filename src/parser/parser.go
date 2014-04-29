@@ -22,80 +22,71 @@ func dbConnect(database string, parameters string) *sql.DB {
 
 func main() {
     db := dbConnect("postgres", dbURL) 
-    rows, err := db.Query("SELECT * FROM debattklimatet_tweet")
+    rows, err := db.Query("SELECT id, text, user_id, parsed FROM debattklimatet_tweet")
     
     if err != nil {
             log.Fatal(err)
     }
     for rows.Next() {
             //createdat | favoritecount | favorited | id | idstr | retweetcount | retweeted | source | text | user_id
-            var createdat string
-            var favoritecount int
-            var favorited bool
             var id int64
-            var idstr string
-            var retweetcount int
-            var retweeted bool
-            var source string
             var text string
             var user_id int64
             var parsed bool
-            var relevant bool
-            if err := rows.Scan(&createdat, &favoritecount, &favorited, &id, &idstr, &retweetcount, &retweeted, &source, &text, &user_id, &parsed, &relevant); err != nil {
-                    log.Fatal(err)
+            err := rows.Scan(&id, &text, &user_id, &parsed)
+            if  err != nil {
+                log.Fatal(err)
             }
-            fmt.Printf("user_id %d tweeted %s\n", user_id, text)
+            //fmt.Printf("user_id %d tweeted %s\n", user_id, text)
+
+            if err := rows.Err(); err != nil {
+            log.Fatal(err)
+            }
+    
+            getPoint := false
+            unwantedWords := make([]string, 2)
+            unwantedWords[0] = "miljöpartiet"
+            // Removes hashtags
+            unwantedWords[1] = "(#\\S*)"
+            wantedWords := make([]string, 2)
+            wantedWords[0] = "hållbar utveckling"
+            wantedWords[1] = "miljö([a-z]*)"
+            
+            tweetText := strings.ToLower(text)
+
+            for i, _ := range unwantedWords {
+                tweetText = removeUnwanted(unwantedWords[i], tweetText)
+            }
+            
+            for i, _ := range wantedWords {
+                if hasExpression(wantedWords[i], tweetText){
+                    fmt.Println("it works!")
+                    getPoint = true
+                    //status = true
+                }
+            } 
+            if getPoint {
+                recountPoints(user_id, db)
+            }
     }
     
-    if err := rows.Err(); err != nil {
-            log.Fatal(err)
-    }
-	
-		getPoint bool := false
-		unwantedWords := make([]string, 2)
-		unwantedWords[0] = "miljöpartiet"
-		// Removes hashtags
-		unwanteedWords[1] = "(#\S*)"
-		wantedWords := make([]string, 2)
-		wantedWords[0} = "hållbar utveckling"
-		wantedWords[1] = "miljö([a-z]*)"
-		
-		text = toLower(text)
-
-		for i int = 0, i < len(unwantedWords), i++ {
-			text := removeUnwanted(unwantedWords[i], text)
-		}
-		
-		for i int = 0, i < len(wantedWords), i++ {
-			if hasExpression(wantedWord[i], text){
-				getPoint = true
-				//status = true
-			}
-		}
-		
-		if getPoint {
-			recount(user_id, db)
-		}
-		
-	}
+    
 }
 
 	//Removes the specified unwanted expression from the tweet (if the tweet contains the expression)
-	func removeUnwanted(string expression, string tweet) string{
+	func removeUnwanted(expression string, tweet string) string{
 	
-	reg, error := regexp.Compile ("expression")
-    if error != nil {
-        fmt.Printf ("Compile failed: %s", error.String ())
+	reg, err := regexp.Compile ("expression")
+    if err != nil {
+        fmt.Println("Compile failed: %s", err)
         os.Exit (1)
     }
-	output := ""
-		output = string (reg.ReplaceAll (strings.Bytes (tweet),
-    			      strings.Bytes ("")))
+	return string (reg.ReplaceAllString (tweet, ("")))
 					  
 	}				  
 	
 	// Checks if the tweet contains the specified expression 
-	func hasExpression (string expression, string tweet) bool{
+	func hasExpression (expression string, tweet string) bool{
 		r, _ := regexp.Compile("expression")
 		return r.Match([]byte("tweet"))										//om något av uttrycken finns, returnera true, annars false
 	}
