@@ -26,6 +26,9 @@ TEMPLATE_DEBUG = True
 
 ALLOWED_HOSTS = []
 
+TEMPLATE_DIRS = (
+	BASE_DIR+"/templates/",
+)
 
 # Application definition
 
@@ -37,6 +40,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'debattklimatet',
+    'django_extensions',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -58,10 +62,10 @@ WSGI_APPLICATION = 'django_backend.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': "co2ninjas",
         'USER': "co2ninjas",
-        'PASSWORD': "",
+        'PASSWORD': "co2ninjas12345",
         'HOST': 'django-db.cyyapufsikx9.eu-west-1.rds.amazonaws.com',
         'PORT': '5432',                      # Set to empty string for default.
     }

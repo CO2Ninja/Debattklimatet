@@ -1,3 +1,7 @@
 from django.contrib import admin
+from models import twitteruser, tweet, hashtag, media
 
-# Register your models here.
+admin.site.register(twitteruser)
+admin.site.register(tweet)
+admin.site.register(hashtag)
+admin.site.register(media)
