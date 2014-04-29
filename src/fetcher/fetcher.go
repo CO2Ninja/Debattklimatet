@@ -143,5 +143,5 @@ func insertTweets(tweet []anaconda.Tweet) {
 
 //GO!
 func main() {
-	insertTweets(getHome("3"))
+	insertTweets(getHome("1000"))
 }
