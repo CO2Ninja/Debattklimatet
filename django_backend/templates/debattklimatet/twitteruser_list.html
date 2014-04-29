@@ -1,0 +1,17 @@
+<h2>Partierna</h2>
+
+{% for party in object_list %}
+<img src="{{ party.profileimageurl }}" id={{party.id}} style="display:none">
+{% endfor %}
+
+<canvas id="canvas" width="500" height="375" style="border:1px solid #d3d3d3"></canvas>
+
+
+<script>
+window.onload = function() {
+    var context = document.getElementById("canvas").getContext("2d");
+    {% for party in object_list %}
+        context.drawImage(document.getElementById("{{party.id}}"), {{forloop.counter0}}*50, 325-{{party.totalscore}}*50);
+    {% endfor %}
+}
+</script>
