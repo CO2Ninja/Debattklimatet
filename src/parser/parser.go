@@ -76,7 +76,7 @@ func main() {
 	//Removes the specified unwanted expression from the tweet (if the tweet contains the expression)
 	func removeUnwanted(expression string, tweet string) string{
 	
-	reg, err := regexp.Compile ("expression")
+	reg, err := regexp.Compile (expression)
     if err != nil {
         fmt.Println("Compile failed: %s", err)
         os.Exit (1)
@@ -87,13 +87,14 @@ func main() {
 	
 	// Checks if the tweet contains the specified expression 
 	func hasExpression (expression string, tweet string) bool{
-		r, _ := regexp.Compile("expression")
-		return r.Match([]byte("tweet"))										//om något av uttrycken finns, returnera true, annars false
+		r, _ := regexp.Compile(expression)
+        fmt.Println(r.Match([]byte(tweet)))
+		return r.Match([]byte(tweet))										//om något av uttrycken finns, returnera true, annars false
 	}
 	
 	func recountPoints(userId int64, db *sql.DB) {
             //Here we update add one point to the users totalscore column.
-            _, err := db.Exec("UPDATE debattklimatet_twitterusers SET totalscore = totalscore + 1 WHERE id=$1", userId)
+            _, err := db.Exec("UPDATE debattklimatet_twitteruser SET totalscore = totalscore + 1 WHERE id=$1", userId)
             if err != nil {     
                         fmt.Println(err)
                     }
