@@ -46,11 +46,17 @@ func main() {
 		getPoint := false
 		unwantedWords := make([]string, 2)
 		unwantedWords[0] = "miljöpartiet"
-		// Removes hashtags
-		unwantedWords[1] = "(#\\S*)"
-		wantedWords := make([]string, 2)
-		wantedWords[0] = "hållbar utveckling"
-		wantedWords[1] = "miljö([a-z]*)"
+		unwantedWords[1] = "naturlig([a-z]*)"
+		wantedWords := make([]string, 9)
+		wantedWords[0] = "(#*)hållbar([a-z]*)"
+		wantedWords[1] = "(#*)miljö([a-z]*)"
+		wantedWords[2] = "(#*)klimat([a-z]*)"
+		wantedWords[3] = "(#*)ekologi([a-z]*)"
+		wantedWords[4] = "biologisk mångfald"
+		wantedWords[5] = "(#*)natur([a-z]*)"
+		wantedWords[6] = "(#*)([a-z]*)utsläpp([a-z]*)"
+		wantedWords[7] = "global uppvärmning"
+		wantedWords[8] = "växthusgas([a-z]*)"		
 
 		tweetText := strings.ToLower(text)
 
