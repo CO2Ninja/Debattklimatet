@@ -30,6 +30,11 @@ TEMPLATE_DIRS = (
 	BASE_DIR+"/templates/",
 )
 
+STATICFILES_DIRS = (
+	BASE_DIR+"/static/",
+)
+
+
 # Application definition
 
 INSTALLED_APPS = (

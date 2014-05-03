@@ -1,23 +1,48 @@
+<body style="width:80%;margin:0px auto;background:url('/static/bakgrundfabrik.png');background-size:100% 100%;">
 
+<style>
+@font-face {
+	font-family: cool_font;
+	src: url('/static/newscycle-regular.ttf');
+}
+</style>
 
+<img src="/static/295674163_5e51f8dd52_o.jpg" id="bg" style="display:none">
 {% for party in object_list %}
-<img src="{{ party.profileimageurl }}" id={{party.id}} style="display:none">
+<img src="/static/{{party.id}}.png" id={{party.id}} style="display:none;width:50px">
 {% endfor %}
 
-<div id="container">
-<h2>Partierna</h2>
-<canvas id="canvas" width="700" height="375" style="border:1px solid #d3d3d3; float:left"></canvas>
 
-<div id="tweetlist" style="float:left; height:375px;width:400px">
+<div id="container" style="text-align:center; ">
+<div style="float:left; ">
+<h2>Debattklimatet</h2>
+<h3>Hur går debatten om klimatet?</h3>
+<canvas id="canvas" width="800" height="820"float:left"></canvas>
+</div>
+
+<div style="float:left;width:430px;">
+<div id="tweetlist" style="clear:both; height:375px;margin-top:1em;padding-left:2em;">
+</div>
+<div style="clear:both;margin-top:2em;margin-left:3em;">
+Om oss
+<p style="text-align:left"> 
+Vi är fyra dataloger från KTH som delar uppfattningen att miljö och hållbarhet är vår tids absolut
+viktigaste fråga. Därför vill vi belysa hur partierna prioriterar miljön i debatten. 
+Vi bedömer inte politiken, men vill uppmärksamma miljön och skapa debatt.
+</div>
 </div>
 </div>
 
 <script>
 window.onload = function() {
     var context = document.getElementById("canvas").getContext("2d");
+    //context.drawImage(document.getElementById("bg"), 0, 0, 1100, 750);
     {% for party in object_list %}
-        context.drawImage(document.getElementById("{{party.id}}"), {{forloop.counter0}}*50, 325-{{party.totalscore}}*50);
+        console.log("{{party.id}}");
+        context.drawImage(document.getElementById("{{party.id}}"), {{forloop.counter0}}*95 + 30, 670-{{party.totalscore}}*50, 90, 105);
     {% endfor %}
+
     document.getElementById("tweetlist").innerHTML='<object type="text/html" data="/tweets/" style="height:100%;width:100%" ></object>';
 }
 </script>
+</body>
