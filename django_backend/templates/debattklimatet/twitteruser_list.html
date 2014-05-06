@@ -43,10 +43,10 @@ footer {
 <h2>Debattklimatet</h2>
 <h3>Hur går debatten om klimatet?</h3>
 
-<canvas id="canvas" width="800" height="820" style="float:left;border-style:solid;border-width:thin;"></canvas>
+<canvas id="canvas" width="800" height="820" style="float:left"></canvas>
 </div>
 
-<div id="tweetlist" style="float:right;width:35%;height:100%;border-style:solid;border-width:thin;">
+<div id="tweetlist" style="float:right;width:35%;height:100%">
 </div>
 
 <footer>
@@ -56,22 +56,23 @@ Om oss
 Vi är fyra dataloger från KTH som delar uppfattningen att miljö och hållbarhet är vår tids absolut
 viktigaste fråga. Därför vill vi belysa hur partierna prioriterar miljön i debatten. 
 Vi bedömer inte politiken, men vill uppmärksamma miljön och skapa debatt.
-</footer>
 </div>
+</footer>
+
 </div>
 <script>
 window.onload = function() {
-	document.getElementById("tweetlist").style.height= Math.round(window.innerHeight*0.95 - 120) + "px";
-    
+	document.getElementById("tweetlist").style.height= Math.round(window.innerHeight*0.80) + "px";
+
     var context = document.getElementById("canvas").getContext("2d");
     
     context.canvas.width  = window.innerWidth*0.9-document.getElementById("tweetlist").offsetWidth -30;
 	context.canvas.height = window.innerHeight*0.85 - 150;
+
+	var step = (context.canvas.height-120)/{{maxscore}};
 	
-    //context.drawImage(document.getElementById("bg"), 0, 0, 1100, 750);
     {% for party in object_list %}
-        console.log("{{party.id}}");
-        context.drawImage(document.getElementById("{{party.id}}"), {{forloop.counter0}}*((context.canvas.width-90)/8), context.canvas.height-110-{{party.totalscore}}*30, 90, 105);
+        context.drawImage(document.getElementById("{{party.id}}"), {{forloop.counter0}}*((context.canvas.width-95)/7), context.canvas.height-110-{{party.totalscore}}*step, 90, 105);
     {% endfor %}
 
     document.getElementById("tweetlist").innerHTML='<object type="text/html" data="/tweets/" style="height:100%;width:100%" ></object>';
