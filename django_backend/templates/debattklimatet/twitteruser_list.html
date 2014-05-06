@@ -1,45 +1,77 @@
-<body style="width:80%;margin:0px auto;background:url('/static/bakgrundfabrik.png');background-size:100% 100%;">
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+    </head>
+
+<body>
 
 <style>
-@font-face {
-	font-family: cool_font;
-	src: url('/static/newscycle-regular.ttf');
+body { 
+  background: url('/static/bakgrundfabrik.png') no-repeat center center fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
 }
-</style>
-
+	
+footer {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 15%;
+    width: 100%;
+}
+</style>	
+	
+<div style="width:90%;margin:0px auto;">
 <img src="/static/295674163_5e51f8dd52_o.jpg" id="bg" style="display:none">
 {% for party in object_list %}
 <img src="/static/{{party.id}}.png" id={{party.id}} style="display:none;width:50px">
 {% endfor %}
 
 
-<div id="container" style="text-align:center; ">
-<div style="float:left; ">
+
+<div id="canvas_container" style="float:left; text-align:center">
 <h2>Debattklimatet</h2>
 <h3>Hur går debatten om klimatet?</h3>
-<canvas id="canvas" width="800" height="820"float:left"></canvas>
+
+<canvas id="canvas" width="800" height="820" style="float:left;border-style:solid;border-width:thin;"></canvas>
 </div>
 
-<div style="float:left;width:430px;">
-<div id="tweetlist" style="clear:both; height:375px;margin-top:1em;padding-left:2em;">
+<div id="tweetlist" style="float:right;width:35%;height:100%;border-style:solid;border-width:thin;">
 </div>
-<div style="clear:both;margin-top:2em;margin-left:3em;">
+
+<footer>
+<div style="width:60%;margin:0px auto;text-align:center">
 Om oss
 <p style="text-align:left"> 
 Vi är fyra dataloger från KTH som delar uppfattningen att miljö och hållbarhet är vår tids absolut
 viktigaste fråga. Därför vill vi belysa hur partierna prioriterar miljön i debatten. 
 Vi bedömer inte politiken, men vill uppmärksamma miljön och skapa debatt.
+</footer>
 </div>
 </div>
-</div>
-
 <script>
 window.onload = function() {
+	document.getElementById("tweetlist").style.height= Math.round(window.innerHeight*0.95 - 120) + "px";
+    
     var context = document.getElementById("canvas").getContext("2d");
+    
+    context.canvas.width  = window.innerWidth*0.9-document.getElementById("tweetlist").offsetWidth -30;
+	context.canvas.height = window.innerHeight*0.85 - 150;
+	
     //context.drawImage(document.getElementById("bg"), 0, 0, 1100, 750);
     {% for party in object_list %}
         console.log("{{party.id}}");
-        context.drawImage(document.getElementById("{{party.id}}"), {{forloop.counter0}}*95 + 30, 670-{{party.totalscore}}*50, 90, 105);
+        context.drawImage(document.getElementById("{{party.id}}"), {{forloop.counter0}}*((context.canvas.width-90)/8), context.canvas.height-110-{{party.totalscore}}*30, 90, 105);
     {% endfor %}
 
     document.getElementById("tweetlist").innerHTML='<object type="text/html" data="/tweets/" style="height:100%;width:100%" ></object>';
