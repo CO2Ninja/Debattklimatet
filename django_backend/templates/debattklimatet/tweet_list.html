@@ -1,8 +1,26 @@
+	<script>
+		setTimeout(function() {
+			window.location.reload(true);  //true from server, false from cache
+		}, 30000);
+	</script>
 	<style>
 	a:link {text-decoration:none;color:#ffffff;}
 	a:visited {text-decoration:none;color:#ffffff}
 	a:hover {text-decoration:underline;color:#ffffff}
 	a:active {text-decoration:underline;color:#ffffff}
+	#tweets {
+		display: inline-block;
+		padding: 16px;
+		margin: 10px 0;
+		max-width: 468px;
+		border: #ddd 1px solid;
+		border-top-color: #eee;
+		border-bottom-color: #bbb;
+		border-radius: 5px;
+		box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+		font: bold 14px/18px Helvetica, Arial, sans-serif;
+		color: #000;
+	}
 	</style>
 	<div id="tweets">
 		<div id="header" style="float:left;">
@@ -12,7 +30,7 @@
 	</div>
     {% for tweet in object_list %}
         {% if tweet.relevant %}
-        	<div id="container" style="width:430px">
+        	<div id="tweets" style="width:430px">
 
 				<div id="header" style="background-color:#5CA028;width:382px;height:7%;float:right;">
 					<div id="tweet-user" style="background-color:#ffcb05;height:100%;width:70%;float:left;">
