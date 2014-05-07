@@ -4,10 +4,10 @@
 		}, 30000);
 	</script>
 	<style>
-	a:link {text-decoration:none;color:#ffffff;}
-	a:visited {text-decoration:none;color:#ffffff}
-	a:hover {text-decoration:underline;color:#ffffff}
-	a:active {text-decoration:underline;color:#ffffff}
+	a:link {text-decoration:none;color:#000000;}
+	a:visited {text-decoration:none;color:#000000}
+	a:hover {text-decoration:underline;color:#000000}
+	a:active {text-decoration:underline;color:#000000}
 	#tweets {
 		display: inline-block;
 		padding: 16px;
@@ -18,6 +18,19 @@
 		border-bottom-color: #bbb;
 		border-radius: 5px;
 		box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+		font: bold 14px/18px Helvetica, Arial, sans-serif;
+		color: #000;
+	}
+	#content {
+		display: inline-block;
+		padding: 16px;
+		margin: 10px 0;
+		border: #ddd 1px solid;
+		border-top-color: #eee;
+		border-bottom-color: #bbb;
+		border-radius: 5px;
+		box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+		background-color:#EEEEEE;
 		font: bold 14px/18px Helvetica, Arial, sans-serif;
 		color: #000;
 	}
@@ -32,32 +45,32 @@
         {% if tweet.relevant %}
         	<div id="tweets" style="width:430px">
 
-				<div id="header" style="background-color:#5CA028;width:382px;height:7%;float:right;">
-					<div id="tweet-user" style="background-color:#ffcb05;height:100%;width:70%;float:left;">
+				<div id="header" style="width:382px;height:7%;float:right;">
+					<div id="tweet-user" style="height:100%;width:230px;margin-left:20px;float:left;">
 						{{ tweet.user.name}} @{{tweet.user.screenname}}</div>
-					<div id="created-at" style="height:100%;width:30%;text-align:center;float:left;">
+					<div id="created-at" style="height:100%;width:132px;text-align:center;float:left;">
 						{{ tweet.createdat}}</div>		
 				</div>
 
 				<div id="profile" style="background-color:#FFFFFF;width:48px;float:left;">
 					<b><img src="{{tweet.user.profileimageurl }}"></b><br></div>
 
-					<div id="content" style="background-color:#EEEEEE;width:382px;float:left;">
+					<div id="content" style="width:382px;float:left;">
 						<div id="tweet-text" style="margin-top:15px;">
 					 	{{tweet.text}}</div>
 					 	<br> 
 
-						<div id="footer" style="background-color:#FFFFFF;clear:both;height:30px;text-align:center;">
-							<div id="reply" style="background-color:rgba(0, 0, 0, 0.5);height:100%;width:25%;text-align:center;float:left;">
+						<div id="footer" style="clear:both;height:30px;text-align:center;">
+							<div id="reply" style="height:100%;width:25%;text-align:center;float:left;">
 								<img src="https://si0.twimg.com/images/dev/cms/intents/icons/reply_hover.png">
 								<a href="https://twitter.com/intent/tweet?in_reply_to={{tweet.id}}" target="new">Reply</a></div>
-							<div id="retweet" style="background-color:#990000;height:100%;width:25%;text-align:center;float:left;">
+							<div id="retweet" style="height:100%;width:25%;text-align:center;float:left;">
 								<img src="https://si0.twimg.com/images/dev/cms/intents/icons/retweet_hover.png">
 								<a href="https://twitter.com/intent/retweet?tweet_id={{tweet.id}}" target="new">Retweet</a></div>
-							<div id="favorite" style="background-color:#800080;height:100%;width:25%;text-align:center;float:left;">
+							<div id="favorite" style="height:100%;width:25%;text-align:center;float:left;">
 								<img src="https://si0.twimg.com/images/dev/cms/intents/icons/favorite_hover.png">
 								<a href="https://twitter.com/intent/favorite?tweet_id={{tweet.id}} target="new"">Favorite</a></div>
-							<div id="follow" style="background-color:#ffcb05;height:100%;width:25%;text-align:center;float:left;">
+							<div id="follow" style="height:100%;width:25%;text-align:center;float:left;">
 								<a href="https://twitter.com/{{tweet.user.screenname}}" target="new">Follow</a></div>	
 						</div>			
 					</div>	
