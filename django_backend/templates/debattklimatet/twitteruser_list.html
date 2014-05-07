@@ -15,7 +15,7 @@
 
 <style>
 body { 
-  background: url('/static/bakgrundfabrik.png') no-repeat center center fixed; 
+  background: url('/static/TheBakgrund.png') no-repeat center center fixed; 
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
@@ -29,38 +29,55 @@ footer {
     height: 15%;
     width: 100%;
 }
+  #omossbox {
+    display: inline-block;
+    padding: 16px;
+    margin: 10px 0;
+    max-width: 600px;
+    border: #ddd 1px solid;
+    border-top-color: #eee;
+    border-bottom-color: #bbb;
+    border-radius: 5px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+    font: bold 14px/18px Helvetica, Arial, sans-serif;
+  }
+
 </style>	
 	
 <div style="width:90%;margin:0px auto;">
 <img src="/static/295674163_5e51f8dd52_o.jpg" id="bg" style="display:none">
 {% for party in object_list %}
-<img src="/static/{{party.id}}.png" id={{party.id}} style="display:none;width:50px">
+<img src="/static/{{party.id}}.png" id="{{party.id}}" style="display:none;width:47.8px;height:66.8px;">
 {% endfor %}
 
 
 
-<div id="canvas_container" style="float:left; text-align:center">
+<div id="canvas_container" style="float:left; text-align:left">
 <h2>Debattklimatet</h2>
 <h3>Hur går debatten om klimatet?</h3>
 
 <canvas id="canvas" width="800" height="820" style="float:left"></canvas>
 </div>
 
-<div id="tweetlist" style="float:right;width:35%;height:100%">
+<div id="tweetlist" style="float:right;width:30%;height:100%">
 </div>
 
 <footer>
 <div style="width:60%;margin:0px auto;text-align:center">
-Om oss
-<p style="text-align:left"> 
+<div id="omossbox">
+<div style="font: bold 18px/22px Helvetica, Arial, sans-serif;text-align:center" >Om oss</div>
 Vi är fyra dataloger från KTH som delar uppfattningen att miljö och hållbarhet är vår tids absolut
 viktigaste fråga. Därför vill vi belysa hur partierna prioriterar miljön i debatten. 
 Vi bedömer inte politiken, men vill uppmärksamma miljön och skapa debatt.
+</div>
 </div>
 </footer>
 
 </div>
 <script>
+setTimeout(function() {
+      window.location.reload(true);  //true from server, false from cache
+    }, 200000);
 window.onload = function() {
 	document.getElementById("tweetlist").style.height= Math.round(window.innerHeight*0.80) + "px";
 
