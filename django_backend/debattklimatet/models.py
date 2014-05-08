@@ -59,4 +59,6 @@ class tweet(models.Model):
     def __unicode__(self):
         return unicode(self.text)
     
+    class Meta:
+        ordering = ["-createdat"]
     
