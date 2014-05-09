@@ -44,19 +44,25 @@ func main() {
 		}
 
 		getPoint := false
-		unwantedWords := make([]string, 2)
+		unwantedWords := make([]string, 7)
 		unwantedWords[0] = "miljöpartiet"
 		unwantedWords[1] = "naturlig([a-z]*)"
-		wantedWords := make([]string, 9)
-		wantedWords[0] = "(#*)hållbar([a-z]*)"
-		wantedWords[1] = "(#*)miljö([a-z]*)"
-		wantedWords[2] = "(#*)klimat([a-z]*)"
-		wantedWords[3] = "(#*)ekologi([a-z]*)"
+		unwantedWords[2] = "([a-z]+)hållbar"
+		unwantedWords[3] = "([a-z]+)miljö"
+		unwantedWords[4] = "([a-z]+)klimat"
+		unwantedWords[5] = "([a-z]+)ekologi"
+		unwantedWords[6] = "([a-z]+)natur"
+		wantedWords := make([]string, 10)
+		wantedWords[0] = "hållbar"
+		wantedWords[1] = "miljö"
+		wantedWords[2] = "klimat"
+		wantedWords[3] = "ekologi"
 		wantedWords[4] = "biologisk mångfald"
-		wantedWords[5] = "(#*)natur([a-z]*)"
-		wantedWords[6] = "(#*)([a-z]*)utsläpp([a-z]*)"
+		wantedWords[5] = "natur"
+		wantedWords[6] = "utsläpp"
 		wantedWords[7] = "global uppvärmning"
-		wantedWords[8] = "växthusgas([a-z]*)"		
+		wantedWords[8] = "växthusgas"
+		wantedWords[9] = "ekosystem"		
 
 		tweetText := strings.ToLower(text)
 
