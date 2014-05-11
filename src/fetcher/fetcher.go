@@ -26,6 +26,8 @@ const (
 	Sverigedemokraterna = 97878686
 )
 
+var partyArray []int64 = []int64{19226961, 17233550, 3796501, 18687011, 18124359, 3801501, 19014898, 97878686}
+
 //config variables
 var CONSUMER_KEY = "xswE9V0Xjlsvzf14P7Mk7LOg5"
 var CONSUMER_SECRET = "nHX2KIFZA4dFmUEOAIxA1msyOpydEtCyp13VREFcKjpVX8saHs"
@@ -42,6 +44,16 @@ func init() {
 	anaconda.SetConsumerKey(CONSUMER_KEY)
 	anaconda.SetConsumerSecret(CONSUMER_SECRET)
 	api = anaconda.NewTwitterApi(ACCESS_TOKEN, ACCESS_TOKEN_SECRET)
+}
+
+//Checks if the tweet.userId is a valid one
+func chechParty(tweet anaconda.Tweet) bool {
+	for _, id := range partyArray {
+		if tweet.User.Id == id {
+			return true
+		}
+	}
+	return false
 }
 
 //Fetches recent tweets from the Home timeline
@@ -82,6 +94,10 @@ func insertTweets(tweet []anaconda.Tweet) {
 	db := dbConnect("postgres", dbURL)
 
 	for _, tweets := range tweet {
+
+		if !chechParty(tweets) {
+			continue
+		}
 		//add user
 		//if !userExists(db, tweets.User.Id) {
 		if true {
@@ -143,5 +159,5 @@ func insertTweets(tweet []anaconda.Tweet) {
 
 //GO!
 func main() {
-	insertTweets(getHome("1000"))
+	insertTweets(getHome("100"))
 }

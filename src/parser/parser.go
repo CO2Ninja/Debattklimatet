@@ -62,7 +62,7 @@ func main() {
 		wantedWords[6] = "utsläpp"
 		wantedWords[7] = "global uppvärmning"
 		wantedWords[8] = "växthusgas"
-		wantedWords[9] = "ekosystem"		
+		wantedWords[9] = "ekosystem"
 
 		tweetText := strings.ToLower(text)
 
@@ -79,10 +79,10 @@ func main() {
 		}
 		if getPoint {
 			recountPoints(user_id, db)
-            isRelevant(id, db)
+			isRelevant(id, db)
 		}
 	}
-    db.Close()
+	db.Close()
 
 }
 
@@ -120,8 +120,8 @@ func recountPoints(userId int64, db *sql.DB) {
 }
 
 func isRelevant(id int64, db *sql.DB) {
-    _, err := db.Exec("UPDATE debattklimatet_tweet SET relevant=TRUE WHERE id=$1", id)
-    if err != nil {
-        fmt.Println(err)
-    }
+	_, err := db.Exec("UPDATE debattklimatet_tweet SET relevant=TRUE WHERE id=$1", id)
+	if err != nil {
+		fmt.Println(err)
+	}
 }
