@@ -18,7 +18,7 @@
 
 <style>
 body { 
-  background: url('/static/TheBakgrund.png') no-repeat center center fixed; 
+  background: url('/static/TheBackground.png') no-repeat bottom fixed; 
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
@@ -46,43 +46,39 @@ footer {
   }
 </style>	
 	
-<div style="width:90%;margin:0px auto;">
-<img src="/static/295674163_5e51f8dd52_o.jpg" id="bg" style="display:none">
-{% for party in object_list %}
-<img src="/static/{{party.id}}.png" id="{{party.id}}" style="display:none;width:47.8px;height:66.8px;">
-{% endfor %}
+<div style="width:100%;margin:0px auto;">
+    {% for party in object_list %}
+    <img src="/static/{{party.id}}.png" id="{{party.id}}" style="display:none;width:30%;height:30%;">
+    {% endfor %}
 
 
 
-<div id="canvas_container" style="float:left; text-align:left">
-<h2>Debattklimatet</h2>
-<h3>Hur går debatten om klimatet?</h3>
-
-<canvas id="canvas" width="800" height="820" style="float:left"></canvas>
-</div>
-    <div id="box" style="width:25%;margin-left:70px">
-        <div id="header" style="float:left;">
+    <div id="canvas_container" style="float:left;margin-left:5%;text-align:left">
+        <canvas id="canvas" style="float:left; width:100%"></canvas>
+    </div>
+        <div id="test" style="width:20%;float:right;margin-right:5%;margin-top:1%">
+            <div id="header" style="float:left;">
             <h2>Tweets</h2> </div>
-        <div id="header-img" style="float:left;margin-left:50px;">     
+        <div id="header-img" style="float:left;margin-left:10%;">     
             <img src="/static/bird_blue_48.png"></div>
     </div>
     <div id="tweetlist" style="float:right;width:30%;height:100%"></div>
 
-<footer>
-<div style="width:60%;margin:0px auto;text-align:center">
-<div id="box">
-<div style="font: bold 18px/22px Helvetica, Arial, sans-serif;text-align:center" >Om oss</div>
-Vi är fyra dataloger från KTH som delar uppfattningen att miljö och hållbarhet är vår tids absolut
-viktigaste fråga. Därför vill vi belysa hur partierna prioriterar miljön i debatten. 
-Vi bedömer inte politiken, men vill uppmärksamma miljön och skapa debatt.
-</div>
-</div>
-</footer>
+    <footer>
+    <div style="width:60%;margin:0px auto;text-align:center">
+        <div id="box">
+            <div style="font: bold 18px/22px Helvetica, Arial, sans-serif;text-align:center" >Om oss</div>
+                Vi är fyra dataloger från KTH som delar uppfattningen att miljö och hållbarhet är vår tids absolut
+                viktigaste fråga. Därför vill vi belysa hur partierna prioriterar miljön i debatten. 
+                Vi bedömer inte politiken, men vill uppmärksamma miljön och skapa debatt.
+        </div>
+    </div>
+    </footer>
 
 </div>
 <script>
 setTimeout(function() {
-      window.location.reload(true);  //true from server, false from cache
+      window.location.reload(true); 
     }, 200000);
 window.onload = function() {
 	document.getElementById("tweetlist").style.height= Math.round(window.innerHeight*0.80) + "px";
@@ -92,10 +88,10 @@ window.onload = function() {
     context.canvas.width  = window.innerWidth*0.9-document.getElementById("tweetlist").offsetWidth -70;
 	context.canvas.height = window.innerHeight*0.85 - 150;
 
-	var step = (context.canvas.height-120)/{{maxscore}};
+	var step = (context.canvas.height-170)/{{maxscore}};
 	
     {% for party in object_list %}
-        context.drawImage(document.getElementById("{{party.id}}"), {{forloop.counter0}}*((context.canvas.width-95)/7), context.canvas.height-110-{{party.totalscore}}*step, 90, 105);
+        context.drawImage(document.getElementById("{{party.id}}"), {{forloop.counter0}}*((context.canvas.width-95)/7), context.canvas.height-160-{{party.totalscore}}*step, 90, 105);
     {% endfor %}
 
     document.getElementById("tweetlist").innerHTML='<object type="text/html" data="/tweets/" style="height:100%;width:100%" ></object>';

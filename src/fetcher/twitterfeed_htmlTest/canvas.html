@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+	<body>
+
+		<p>Image to use:</p>
+		<img id="scream" src="img_the_scream.jpg" alt="The Scream" width="220" height="277"><p>Canvas:</p>
+		<canvas id="myCanvas" width="800" height="1000" style="border:1px solid #d3d3d3;">
+		Your browser does not support the HTML5 canvas tag.</canvas>
+
+		<script>
+		function draw() {	
+		  var ctx = document.getElementById('myCanvas').getContext('2d');
+		  var img = new Image();
+		  img.onload = function(){
+		    ctx.drawImage(img,0,0);
+		    ctx.beginPath();
+		    ctx.moveTo(30,96);
+		    ctx.lineTo(70,66);
+		    ctx.lineTo(103,76);
+		    ctx.lineTo(170,15);
+		    ctx.stroke();
+		  };
+		  img.src = 'https://mdn.mozillademos.org/files/5395/backdrop.png';
+		}
+		</script>
+
+	</body>
+</html>
