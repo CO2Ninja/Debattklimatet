@@ -10,7 +10,7 @@ import (
 	"strings"
 )
 
-var dbURL = "user=co2ninjas dbname=co2ninjas password=co2ninjas12345 host=django-db.cyyapufsikx9.eu-west-1.rds.amazonaws.com port=5432"
+var dbURL = "user=Removed dbname=Removed password=Removed host=Removed port=5432"
 
 func dbConnect(database string, parameters string) *sql.DB {
 	db, err := sql.Open(database, parameters)
