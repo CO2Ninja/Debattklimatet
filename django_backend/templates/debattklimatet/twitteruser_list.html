@@ -41,7 +41,7 @@ window.onload = function() {
 	var step = (context.canvas.height-180)/{{maxscore}};
 	
     {% for party in object_list %}
-        context.drawImage(document.getElementById("{{party.id}}"), {{forloop.counter0}}*((context.canvas.width-95)/7), context.canvas.height-170-{{party.totalscore}}*step, 90, 105);
+        context.drawImage(document.getElementById("{{party.id}}"), {{forloop.counter0}}*((context.canvas.width-(context.canvas.width/10))/7), context.canvas.height-170-{{party.totalscore}}*step, context.canvas.width/10, (context.canvas.width/10)*1.16);
     {% endfor %}
 }
 </script>

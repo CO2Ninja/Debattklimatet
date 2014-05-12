@@ -32,7 +32,7 @@ footer {
     height: 15%;
     width: 100%;
 }
-#box {
+#dialog {
     display: inline-block;
     padding: 16px;
     margin: 10px 0;
@@ -43,7 +43,9 @@ footer {
     border-radius: 5px;
     box-shadow: 0 1px 3px rgba(0,0,0,0.15);
     font: bold 14px/18px Helvetica, Arial, sans-serif;  
+        background-color:#EEEEEE;
   }
+  
 #content {
     display: inline-block;
     padding: 5px;
@@ -56,29 +58,42 @@ footer {
     background-color:#EEEEEE;
     font: bold 14px/18px Helvetica, Arial, sans-serif;
     color: #000;
+
+ 
+}
+
+.ui-dialog{   
+	box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+    background:transparent;
     } 
     
+.ui-dialog-content{
+	background-color:#EEEEEE;
+}
+
 </style>	
 	
-    <div id="canvas_container" style="float:left;width:70%;min-height:80%;overflow:hidden">
+    <div id="canvas_container" style="float:left;width:68%;min-height:80%;overflow:hidden">
 
     </div>
-    <div style="float:right;width:29%">
-            <div id="header" style="float:left;text-align:center">
+    <div style="float:right;width:30%">
+            <div id="header" style="float:left;text-align:center;margin-left:2em;">
                 <h2>Tweets</h2> </div>
             <div id="header-img" style="float:left;margin-left:10%">     
                 <img src="/static/bird_blue_48.png"></div>
 		<div id="tweetlist" style="clear:both;width:100%;position:relative;;margin-right:1%;initial-scale=1.0"></div>
     </div>
-    <img id="omOss" src="/static/OmOssKnapp1.png"/>
+    <img id="omOss" src="/static/OmOssKnapp1.png" style="margin-left:40%;cursor: pointer;"/>
     <script>
     $( "#omOss" ).click( function() {
-        $( "#dialog" ).dialog();
+		$( "#dialog" ).dialog();
+        $( "#dialog" ).dialog("option", "width", 640);
+        $("#dialog").dialog({dialogClass:'transparent'});
         });
     </script>
      
  
-<div id="dialog" title="Om oss" style="background-color: #F0FFF0;display:none;">
+<div id="dialog" title="Om oss" style="display:none;width:70%">
   <p>Klimatkrisen går inte längre att förneka och om vi inte agerar kommer det att leda till irreversibla konsekvenser. Alla är medvetna om de livsstilsförändringar som krävs, men sanningen är att vad individen kan göra för miljön är begränsat. Det krävs samhälleliga omställningar, vilka bara kan uppnås genom beslut från våra makthavare. Det är valår. Vi måste rösta miljösmart.</p>
   <p>Så hur aktuell är miljöfrågan i dagens politiska debatt? Här på debattklimatet.se bevakar vi i realtid partiernas officiella twitterkonton. Varje parti representeras av en ballong med dess logga och ju oftare partiet twittrar om miljö och hållbar utveckling, desto högre placeras ballongen i förhållande till de andra partiernas.</p>
   <p>Vi är fyra dataloger från KTH som delar uppfattningen att miljö och hållbarhet är vår tids absolut viktigaste fråga. Vi hoppas på att debattklimatet.se ska ge både väljare och partier en bild av i vilken utsträckning riksdagspartierna tar upp miljöfrågan i sociala medier. I förlängningen hoppas vi på att det ska leda till att miljöfrågan får ta större plats i svensk politik och debatten på nätet. Maila oss gärna på debattklimatet@gmail.com.</p>
@@ -88,7 +103,7 @@ setTimeout(function() {
       window.location.reload(true); 
     }, 200000);
 window.onload = function() {
-	document.getElementById("canvas_container").style.height= Math.round(window.innerHeight*0.80) + "px";
+	document.getElementById("canvas_container").style.height= Math.round(window.innerHeight*0.70) + "px";
 	
 	document.getElementById("tweetlist").style.height= Math.round(window.innerHeight*0.80) + "px";
     
