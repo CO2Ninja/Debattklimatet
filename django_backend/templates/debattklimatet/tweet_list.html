@@ -30,7 +30,7 @@
 		border-bottom-color: #bbb;
 		border-radius: 5px;
 		box-shadow: 0 1px 3px rgba(0,0,0,0.15);
-		font: bold 14px/16px Helvetica, Arial, sans-serif;
+		font: bold 12px/14px Helvetica, Arial, sans-serif;
 		color: #000;
 	}
 	#tweets {
@@ -43,7 +43,7 @@
 		border-bottom-color: #bbb;
 		border-radius: 5px;
 		box-shadow: 0 1px 3px rgba(0,0,0,0.15);
-		font: bold 14px/16px Helvetica, Arial, sans-serif;
+		font: bold 12px/14px Helvetica, Arial, sans-serif;
 		color: #000;
 	}
 	#content {
@@ -56,7 +56,7 @@
 		border-radius: 5px;
 		box-shadow: 0 1px 3px rgba(0,0,0,0.15);
 		background-color:#EEEEEE;
-		font: bold 14px/16px Helvetica, Arial, sans-serif;
+		font: bold 12px/14px Helvetica, Arial, sans-serif;
 		color: #000;
 	}
 	interactive {
@@ -65,20 +65,20 @@
 	</style>
     {% for tweet in object_list %}
         {% if tweet.relevant %}
-        	<div class="tweets" style="width:400px">
+        	<div class="tweets" style="width:350px">
 
-				<div id="header" style="width:352px;height:7%;float:right;">
-					<div id="tweet-user" style="height:100%;width:210px;margin-left:20px;float:left;font: bold 14px/16px Helvetica, Arial, sans-serif;">
+				<div id="header" style="width:302px;height:7%;float:right;">
+					<div id="tweet-user" style="height:100%;width:160px;margin-left:20px;float:left;font: bold 12px/14px Helvetica, Arial, sans-serif;">
 						{{ tweet.user.name}} <a href="https://twitter.com/{{tweet.user.screenname}}" target="new">@{{tweet.user.screenname}}</a></div>
-					<div id="created-at" style="height:100%;width:112px;text-align:center;float:left;">
+					<div id="created-at" style="height:100%;width:62px;text-align:center;float:left;">
 						{{ tweet.createdat}}</div>		
 				</div>
 
 				<div id="profile" style="background-color:#FFFFFF;width:48px;float:left;">
 					<b><img src="{{tweet.user.profileimageurl }}"></b><br></div>
 
-					<div id="content" style="width:352px;float:left;">
-						<div id="tweet-text" style="margin-top:15px;">
+					<div id="content" style="width:302px;float:left;">
+						<div id="tweet-text" style="margin-top:1%;">
 					 	{{tweet.text}}</div>
 					 	<br> 
 
@@ -99,7 +99,7 @@
 					<p>Adding the modal overlay screen makes the dialog look more prominent because it dims out the page content.</p>
 					</iframe>
 			</div>
-			<div id"boarder" style="clear:both;height:5px;"></div>
+			<div id"boarder" style="clear:both;height:1%;"></div>
         {% endif %}
     {% endfor %}
 
