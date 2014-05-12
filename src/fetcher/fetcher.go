@@ -29,11 +29,11 @@ const (
 var partyArray []int64 = []int64{19226961, 17233550, 3796501, 18687011, 18124359, 3801501, 19014898, 97878686}
 
 //config variables
-var CONSUMER_KEY = "xswE9V0Xjlsvzf14P7Mk7LOg5"
-var CONSUMER_SECRET = "nHX2KIFZA4dFmUEOAIxA1msyOpydEtCyp13VREFcKjpVX8saHs"
-var ACCESS_TOKEN = "2447607758-tsYHayIaChAAZ7JMlBcZ5SN86J0qXq9WqpO8xXP"
-var ACCESS_TOKEN_SECRET = "KPCjLAQDhochBZm8Ggyw0c9U2V1Rv4LO7kiYDIvxmMWSj"
-var dbURL = "user=co2ninjas dbname=co2ninjas password=co2ninjas12345 host=django-db.cyyapufsikx9.eu-west-1.rds.amazonaws.com port=5432"
+var CONSUMER_KEY = "Removed"
+var CONSUMER_SECRET = "Removed"
+var ACCESS_TOKEN = "Removed-Removed"
+var ACCESS_TOKEN_SECRET = "Removed"
+var dbURL = "user=Removed dbname=Removed password=Removed host=Removed port=5432"
 
 var api *anaconda.TwitterApi
 
