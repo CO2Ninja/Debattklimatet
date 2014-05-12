@@ -1,5 +1,5 @@
 from django.conf.urls import patterns, include, url
-from django.views.generic import ListView
+from django.views.generic import ListView, TemplateView
 from debattklimatet.models import twitteruser, tweet
 from debattklimatet.views import TwitteruserDetail
 from django.contrib import admin
@@ -11,6 +11,8 @@ urlpatterns = patterns('',
     # url(r'^blog/', include('blog.urls')),
 
     url(r'^admin/', include(admin.site.urls)),
-    (r'^$', TwitteruserDetail.as_view()),
+    (r'^$', TemplateView.as_view(template_name='debattklimatet/index.html')),
     (r'^tweets/$', ListView.as_view(model=tweet,)),
+    (r'^canvas/$', TwitteruserDetail.as_view()),
+    
 )
