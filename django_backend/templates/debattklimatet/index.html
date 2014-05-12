@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.css" />
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+        <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"> </script>
+    </head>
+
+<body>
+
+<style>
+body { 
+  background: url('/static/TheBackground.png') no-repeat bottom fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+	
+footer {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 15%;
+    width: 100%;
+}
+#box {
+    display: inline-block;
+    padding: 16px;
+    margin: 10px 0;
+    max-width: 600px;
+    border: #ddd 1px solid;
+    border-top-color: #eee;
+    border-bottom-color: #bbb;
+    border-radius: 5px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+    font: bold 14px/18px Helvetica, Arial, sans-serif;  
+  }
+#content {
+    display: inline-block;
+    padding: 5px;
+    margin: 5px 0;
+    border: #ddd 1px solid;
+    border-top-color: #eee;
+    border-bottom-color: #bbb;
+    border-radius: 5px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+    background-color:#EEEEEE;
+    font: bold 14px/18px Helvetica, Arial, sans-serif;
+    color: #000;
+    } 
+    
+</style>	
+	
+    <div id="canvas_container" style="float:left;width:70%;min-height:80%;overflow:hidden">
+
+    </div>
+    <div style="float:right;width:29%">
+            <div id="header" style="float:left;">
+                <h2>Tweets</h2> </div>
+            <div id="header-img" style="float:left;margin-left:10%">     
+                <img src="/static/bird_blue_48.png"></div>
+		<div id="tweetlist" style="clear:both;width:100%;position:relative;;margin-right:1%"></div>
+    </div>
+<script>
+setTimeout(function() {
+      window.location.reload(true); 
+    }, 200000);
+window.onload = function() {
+	document.getElementById("canvas_container").style.height= Math.round(window.innerHeight*0.80) + "px";
+	
+	document.getElementById("tweetlist").style.height= Math.round(window.innerHeight*0.80) + "px";
+    
+    document.getElementById("tweetlist").innerHTML='<object type="text/html" data="/tweets/" style="height:100%;width:100%" ></object>';
+    document.getElementById("canvas_container").innerHTML='<object type="text/html" data="/canvas/" style="height:100%;width:100%" ></object>';
+}
+</script>
+</body>
