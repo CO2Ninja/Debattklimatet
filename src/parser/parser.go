@@ -72,7 +72,6 @@ func main() {
 
 		for i, _ := range wantedWords {
 			if hasExpression(wantedWords[i], tweetText) {
-				fmt.Println("it works!")
 				getPoint = true
 				//status = true
 			}
@@ -101,7 +100,6 @@ func removeUnwanted(expression string, tweet string) string {
 // Checks if the tweet contains the specified expression
 func hasExpression(expression string, tweet string) bool {
 	r, _ := regexp.Compile(expression)
-	fmt.Println(r.Match([]byte(tweet)))
 	return r.Match([]byte(tweet)) //om något av uttrycken finns, returnera true, annars false
 }
 

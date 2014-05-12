@@ -111,7 +111,7 @@ func insertTweets(tweet []anaconda.Tweet) {
 				0,
 			)
 			if err != nil {
-				fmt.Println(err)
+				log.Println(err)
 			}
 		}
 
@@ -133,7 +133,7 @@ func insertTweets(tweet []anaconda.Tweet) {
 			false,
 		)
 		if err != nil {
-			fmt.Println(err)
+			log.Println(err)
 		}
 
 		//add tweet media
@@ -149,7 +149,7 @@ func insertTweets(tweet []anaconda.Tweet) {
 				i.Url,
 			)
 			if err != nil {
-				fmt.Println(err)
+				log.Println(err)
 			}
 		}
 	}
@@ -159,5 +159,5 @@ func insertTweets(tweet []anaconda.Tweet) {
 
 //GO!
 func main() {
-	insertTweets(getHome("1000"))
+	insertTweets(getHome("10"))
 }
